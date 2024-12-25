@@ -11,15 +11,6 @@ public class Order {
     private String createdAt;
     private String updatedAt;
 
-    public Order(List<String> ingredients, String _id, String status, Integer number, String createdAt, String updatedAt) {
-        this.ingredients = ingredients;
-        this._id = _id;
-        this.status = status;
-        this.number = number;
-        this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
-    }
-
     public List<String> getIngredients() {
         return ingredients;
     }

@@ -8,12 +8,17 @@ public class User extends Login {
         super(email, password);
         this.name = name;
     }
-    
+
     public String getName() {
         return name;
     }
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    @Override
+    public String toString() {
+        return name + " (email: " + getEmail() + ")";
     }
 }

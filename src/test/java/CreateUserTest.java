@@ -1,9 +1,7 @@
 import io.qameta.allure.Step;
 import io.qameta.allure.junit4.DisplayName;
 import io.qameta.allure.restassured.AllureRestAssured;
-import io.restassured.RestAssured;
 import io.restassured.response.ValidatableResponse;
-import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -14,54 +12,30 @@ import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.notNullValue;
 
-public class CreateUserTest {
+public class CreateUserTest extends AbstractBaseApi {
 
-    private User user; // объект ApiUser для теста
-    private String authToken; // Токен авторизации для тестов, требующих авторизации
     private String existingEmail = "Преображенскася_11@yandex.ru"; // Существующий email для тестов
 
     @Before
     public void setUp() {
-        // Генерация уникальных данных для пользователя
-        String username = RandomStringUtils.randomAlphanumeric(8, 15);  // уникальное имя
-        String password = RandomStringUtils.randomAlphanumeric(8, 15);  // стандартный пароль
-        String email = RandomStringUtils.randomAlphanumeric(8, 15).toLowerCase() + "@yandex.ru";  // email пользователя
-        user = new User(email, password, username);
+        setResource("/auth/register");
 
-        RestAssured.baseURI = Base.API_URL;
+        // Генерация уникальных данных для пользователя
+        user = getRandomUser();
     }
 
     @Test
     @DisplayName("Проверка создания пользователя")
     public void testCreateUser() {
         testCreateUniqueUser();
-        deleteActiveUser();
+        deleteActiveUser(user);
         testCreateUserWithExistingUsername();
         testCreateUserWithoutRequiredField();
     }
 
     @Step("Создание уникального пользователя")
     public void testCreateUniqueUser() {
-        // Отправка запроса на регистрацию нового пользователя
-        ValidatableResponse response = given()
-                .filter(new AllureRestAssured())
-                .header("Content-type", "application/json")
-                .body(user)
-                .log().all()
-                .when()
-                .post("/auth/register")
-                .then()
-                .log().all()
-                .assertThat()
-                .statusCode(200)
-                .body("success", equalTo(true))  // Успех
-                .body("user.email", equalTo(user.getEmail()))  // Проверка email
-                .body("user.name", equalTo(user.getName()))  // Проверка имени
-                .body("accessToken", notNullValue())  // Проверка наличия токенов
-                .body("refreshToken", notNullValue());
-
-        // Сохраняем токен для дальнейших тестов
-        authToken = response.extract().path("accessToken");
+        createDefinedUser(getRandomUser());
     }
 
     @Step("Попытка создать пользователя с уже зарегистрированным логином")
@@ -75,7 +49,7 @@ public class CreateUserTest {
                 .body(existingUser)
                 .log().all()
                 .when()
-                .post("/auth/register")
+                .post(resource)
                 .then()
                 .log().all()
                 .assertThat()
@@ -95,7 +69,7 @@ public class CreateUserTest {
                 .body(localUser)
                 .log().all()
                 .when()
-                .post("/auth/register")
+                .post(resource)
                 .then()
                 .log().all()
                 .assertThat()
@@ -125,6 +99,7 @@ public class CreateUserTest {
                 .body(login)
                 .log().all()
                 .when()
+                // TODO other test
                 .post("/auth/login")
                 .then()
                 .log().all()
@@ -151,6 +126,7 @@ public class CreateUserTest {
                 .body(login)
                 .log().all()
                 .when()
+                // TODO other test
                 .post("/auth/login")
                 .then()
                 .log().all()
@@ -182,6 +158,7 @@ public class CreateUserTest {
                 .body(userUpdate)
                 .log().all()
                 .when()
+                // TODO other test
                 .patch("/auth/user")
                 .then()
                 .log().all()
@@ -203,6 +180,7 @@ public class CreateUserTest {
                 .body(localUser)
                 .log().all()
                 .when()
+                // TODO other test
                 .patch("/auth/user")
                 .then()
                 .log().all()
@@ -215,25 +193,6 @@ public class CreateUserTest {
     @After
     public void tearDown() {
         // Очистка данных после теста (удаление пользователя, если был токен)
-        deleteActiveUser();
-    }
-
-    private void deleteActiveUser() {
-        if (authToken != null) {
-            String authValue = authToken;
-
-            authToken = null;
-
-            given()
-                    .filter(new AllureRestAssured())
-                    .header("Authorization", authValue)  // Авторизация с использованием токена
-                    .log().all()
-                    .when()
-                    .delete("/auth/user")
-                    .then()
-                    .log().all()
-                    .assertThat()
-                    .statusCode(202);  // Успешное удаление
-        }
+        deleteActiveUser(user);
     }
 }
