@@ -16,23 +16,20 @@ public class CreateUserTest extends AbstractBaseApi {
     @Before
     public void setUp() {
         setResource("/auth/register");
-
-        // Генерация уникальных данных для пользователя
-        user = getRandomUser();
     }
 
     @Test
     @DisplayName("Проверка создания пользователя")
     public void testCreateUser() {
         testCreateUniqueUser();
-        deleteActiveUser(user);
         testCreateUserWithExistingUsername();
         testCreateUserWithoutRequiredField();
     }
 
     @Step("Создание уникального пользователя")
     public void testCreateUniqueUser() {
-        createDefinedUser(getRandomUser());
+        createDefinedUser(user = getRandomUser());
+        deleteDefinedUser(user);
     }
 
     @Step("Попытка создать пользователя с уже зарегистрированным логином")
@@ -57,6 +54,8 @@ public class CreateUserTest extends AbstractBaseApi {
 
     @Step("Создание пользователя без обязательного поля (email)")
     public void testCreateUserWithoutRequiredField() {
+        user = getRandomUser();
+
         // Попытка создать пользователя без email
         User localUser = new User(null, "12365", "NewUser");  // Отсутствует email
 
@@ -78,6 +77,6 @@ public class CreateUserTest extends AbstractBaseApi {
     @After
     public void tearDown() {
         // Очистка данных после теста (удаление пользователя, если был токен)
-        deleteActiveUser(user);
+        deleteDefinedUser(user);
     }
 }

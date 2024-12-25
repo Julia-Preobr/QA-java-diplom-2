@@ -30,6 +30,7 @@ public abstract class AbstractBaseApi {
         String username = RandomStringUtils.randomAlphanumeric(8, 15);  // уникальное имя
         String password = RandomStringUtils.randomAlphanumeric(8, 15);  // стандартный пароль
         String email = RandomStringUtils.randomAlphanumeric(8, 15).toLowerCase() + "@yandex.ru";  // email пользователя
+
         return new User(email, password, username);
     }
 
@@ -58,23 +59,27 @@ public abstract class AbstractBaseApi {
         authToken = response.extract().path("accessToken");
     }
 
+    protected void deleteDefinedUser(User user) {
+        if (authToken != null) {
+            deleteActiveUser(user);
+        }
+    }
+
     @Step("Удаление пользователя: {0}")
     protected void deleteActiveUser(User user) {
-        if (authToken != null) {
-            String authValue = authToken;
+        String authValue = authToken;
 
-            authToken = null;
+        authToken = null;
 
-            given()
-                    .filter(new AllureRestAssured())
-                    .header("Authorization", authValue)  // Авторизация с использованием токена
-                    .log().all()
-                    .when()
-                    .delete("/auth/user")
-                    .then()
-                    .log().all()
-                    .assertThat()
-                    .statusCode(202);  // Успешное удаление
-        }
+        given()
+                .filter(new AllureRestAssured())
+                .header("Authorization", authValue)  // Авторизация с использованием токена
+                .log().all()
+                .when()
+                .delete("/auth/user")
+                .then()
+                .log().all()
+                .assertThat()
+                .statusCode(202);  // Успешное удаление
     }
 }

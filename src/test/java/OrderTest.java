@@ -197,7 +197,9 @@ public class OrderTest extends AbstractBaseApi {
     @After
     public void tearDown() throws Exception {
         // Очистка данных после теста (удаление пользователя, если был токен)
-        deleteActiveUser(user);
+        if (authToken != null) {
+            deleteDefinedUser(user);
+        }
     }
 }
 

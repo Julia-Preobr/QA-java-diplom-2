@@ -83,6 +83,6 @@ public class LoginUserTest extends AbstractBaseApi {
     @After
     public void tearDown() {
         // Очистка данных после теста (удаление пользователя, если был токен)
-        deleteActiveUser(user);
+        deleteDefinedUser(user);
     }
 }
