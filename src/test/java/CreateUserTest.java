@@ -20,21 +20,17 @@ public class CreateUserTest extends AbstractBaseApi {
     }
 
     @Test
-    @DisplayName("Проверка создания пользователя")
-    public void testCreateUser() {
-        testCreateUniqueUser();
-        testCreateUserWithExistingUsername();
-        testCreateUserWithoutRequiredField();
-    }
-
-    @Step("Создание уникального пользователя")
+    @DisplayName("Создание уникального пользователя")
     public void testCreateUniqueUser() {
         createDefinedUser(user = getRandomUser());
         deleteDefinedUser(user);
     }
 
-    @Step("Попытка создать пользователя с уже зарегистрированным логином")
+    @Test
+    @DisplayName("Попытка создать пользователя с уже зарегистрированным логином")
     public void testCreateUserWithExistingUsername() {
+        testCreateUniqueUser();
+
         // Попытка регистрации с существующим email
         User existingUser = new User(existingEmail, user.getPassword(), user.getName());
 
@@ -53,13 +49,26 @@ public class CreateUserTest extends AbstractBaseApi {
                 .body("message", equalTo("User already exists"));
     }
 
-    @Step("Создание пользователя без обязательного поля (email)")
-    public void testCreateUserWithoutRequiredField() {
-        user = getRandomUser();
+    @Test
+    @DisplayName("Попытка создать пользователя без email")
+    public void testCreateUserWithoutEmail() {
+        stepCreateUserWithoutRequiredField(new User(null, "12365", "NewUser"));
+    }
 
-        // Попытка создать пользователя без email
-        User localUser = new User(null, "12365", "NewUser");  // Отсутствует email
+    @Test
+    @DisplayName("Попытка создать пользователя без name")
+    public void testCreateUserWithoutName() {
+        stepCreateUserWithoutRequiredField(new User("ahjgsdfjhgasf@yandex.ru", "12365", null));
+    }
 
+    @Test
+    @DisplayName("Попытка создать пользователя без password")
+    public void testCreateUserWithoutPassword() {
+        stepCreateUserWithoutRequiredField(new User("ahjgsdfjhgasf@yandex.ru", null, "NewUser"));
+    }
+
+    @Step("Создание пользователя без обязательного поля (user: {0})")
+    public void stepCreateUserWithoutRequiredField(User localUser) {
         given()
                 .filter(new AllureRestAssured())
                 .header("Content-type", "application/json")

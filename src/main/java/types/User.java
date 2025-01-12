@@ -6,10 +6,14 @@ public class User extends Login {
     @JsonProperty("name")
     private String name;
 
-    // Конструктор
     public User(String email, String password, String name) {
         super(email, password);
         this.name = name;
+    }
+
+    public User(User from) {
+        super(from.getEmail(), from.getPassword());
+        this.name = from.getName();
     }
 
     public String getName() {
@@ -22,6 +26,7 @@ public class User extends Login {
 
     @Override
     public String toString() {
-        return name + " (email: " + getEmail() + ")";
+        return "{name: " + name + "; email: " + getEmail() + "; password: " +
+                (getPassword() == null ? null : "***") + "}";
     }
 }
