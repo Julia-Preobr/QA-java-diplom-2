@@ -1,7 +1,11 @@
 package types;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class Login {
+    @JsonProperty("email")
     private String email;
+    @JsonProperty("password")
     private String password;
 
     public Login(String email, String password) {

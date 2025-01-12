@@ -1,6 +1,9 @@
 package types;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class User extends Login {
+    @JsonProperty("name")
     private String name;
 
     // Конструктор

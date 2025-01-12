@@ -1,14 +1,21 @@
 package types;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.List;
 
 public class Order {
-
+    @JsonProperty("ingredients")
     private List<String> ingredients; // Список ингредиентов
-    private String _id;
+    @JsonProperty("_id")
+    private String id;
+    @JsonProperty("status")
     private String status;
+    @JsonProperty("number")
     private Integer number;
+    @JsonProperty("createdAt")
     private String createdAt;
+    @JsonProperty("updatedAt")
     private String updatedAt;
 
     public List<String> getIngredients() {
@@ -19,12 +26,12 @@ public class Order {
         this.ingredients = ingredients;
     }
 
-    public String get_id() {
-        return _id;
+    public String getId() {
+        return id;
     }
 
-    public void set_id(String _id) {
-        this._id = _id;
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getStatus() {

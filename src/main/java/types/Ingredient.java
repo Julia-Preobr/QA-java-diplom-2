@@ -1,42 +1,39 @@
 package types;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class Ingredient {
-    private String _id;
+    @JsonProperty("_id")
+    private String id;
+    @JsonProperty("name")
     private String name;
+    @JsonProperty("type")
     private String type;
-    private int proteins;
-    private int fat;
-    private int carbohydrates;
-    private int calories;
-    private int price;
+    @JsonProperty("proteins")
+    private Integer proteins;
+    @JsonProperty("fat")
+    private Integer fat;
+    @JsonProperty("carbohydrates")
+    private Integer carbohydrates;
+    @JsonProperty("calories")
+    private Integer calories;
+    @JsonProperty("price")
+    private Integer price;
+    @JsonProperty("image")
     private String image;
-    private String image_mobile;
-    private String image_large;
-    private int __v;
+    @JsonProperty("image_mobile")
+    private String imageMobile;
+    @JsonProperty("image_large")
+    private String imageLarge;
+    @JsonProperty("__v")
+    private Integer v;
 
-    public Ingredient(String _id, String name, String type, int proteins,
-                      int fat, int carbohydrates, int calories, int price,
-                      String image, String image_mobile, String image_large, int __v) {
-        this._id = _id;
-        this.name = name;
-        this.type = type;
-        this.proteins = proteins;
-        this.fat = fat;
-        this.carbohydrates = carbohydrates;
-        this.calories = calories;
-        this.price = price;
-        this.image = image;
-        this.image_mobile = image_mobile;
-        this.image_large = image_large;
-        this.__v = __v;
+    public String getId() {
+        return id;
     }
 
-    public String get_id() {
-        return _id;
-    }
-
-    public void set_id(String _id) {
-        this._id = _id;
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -55,43 +52,43 @@ public class Ingredient {
         this.type = type;
     }
 
-    public int getProteins() {
+    public Integer getProteins() {
         return proteins;
     }
 
-    public void setProteins(int proteins) {
+    public void setProteins(Integer proteins) {
         this.proteins = proteins;
     }
 
-    public int getFat() {
+    public Integer getFat() {
         return fat;
     }
 
-    public void setFat(int fat) {
+    public void setFat(Integer fat) {
         this.fat = fat;
     }
 
-    public int getCarbohydrates() {
+    public Integer getCarbohydrates() {
         return carbohydrates;
     }
 
-    public void setCarbohydrates(int carbohydrates) {
+    public void setCarbohydrates(Integer carbohydrates) {
         this.carbohydrates = carbohydrates;
     }
 
-    public int getCalories() {
+    public Integer getCalories() {
         return calories;
     }
 
-    public void setCalories(int calories) {
+    public void setCalories(Integer calories) {
         this.calories = calories;
     }
 
-    public int getPrice() {
+    public Integer getPrice() {
         return price;
     }
 
-    public void setPrice(int price) {
+    public void setPrice(Integer price) {
         this.price = price;
     }
 
@@ -103,28 +100,46 @@ public class Ingredient {
         this.image = image;
     }
 
-    public String getImage_mobile() {
-        return image_mobile;
+    public String getImageMobile() {
+        return imageMobile;
     }
 
-    public void setImage_mobile(String image_mobile) {
-        this.image_mobile = image_mobile;
+    public void setImageMobile(String imageMobile) {
+        this.imageMobile = imageMobile;
     }
 
-    public String getImage_large() {
-        return image_large;
+    public String getImageLarge() {
+        return imageLarge;
     }
 
-    public void setImage_large(String image_large) {
-        this.image_large = image_large;
+    public void setImageLarge(String imageLarge) {
+        this.imageLarge = imageLarge;
     }
 
-    public int get__v() {
-        return __v;
+    public Integer getV() {
+        return v;
     }
 
-    public void set__v(int __v) {
-        this.__v = __v;
+    public void setV(Integer v) {
+        this.v = v;
     }
+
+    public Ingredient(String id, String name, String type, Integer proteins,
+                      Integer fat, Integer carbohydrates, Integer calories, Integer price,
+                      String image, String imageMobile, String imageLarge, Integer v) {
+        this.id = id;
+        this.name = name;
+        this.type = type;
+        this.proteins = proteins;
+        this.fat = fat;
+        this.carbohydrates = carbohydrates;
+        this.calories = calories;
+        this.price = price;
+        this.image = image;
+        this.imageMobile = imageMobile;
+        this.imageLarge = imageLarge;
+        this.v = v;
+    }
+
 
 }
