@@ -10,6 +10,8 @@ import types.Login;
 import types.User;
 
 import static io.restassured.RestAssured.given;
+import static org.apache.http.HttpStatus.SC_OK;
+import static org.apache.http.HttpStatus.SC_UNAUTHORIZED;
 import static org.hamcrest.Matchers.equalTo;
 
 public class UpdateUserTest extends AbstractBaseApi {
@@ -47,7 +49,7 @@ public class UpdateUserTest extends AbstractBaseApi {
                 .then()
                 .log().all()
                 .assertThat()
-                .statusCode(200)  // Успешное обновление
+                .statusCode(SC_OK)  // Успешное обновление
                 .body("success", equalTo(true))
                 .body("user.name", equalTo("updatedUser"))  // Проверка нового имени
                 .body("user.email", equalTo(user.getEmail()));  // Проверка нового email
@@ -68,7 +70,7 @@ public class UpdateUserTest extends AbstractBaseApi {
                 .then()
                 .log().all()
                 .assertThat()
-                .statusCode(401)  // Ошибка 401 без авторизации
+                .statusCode(SC_UNAUTHORIZED)  // Ошибка 401 без авторизации
                 .body("success", equalTo(false))
                 .body("message", equalTo("You should be authorised"));
     }

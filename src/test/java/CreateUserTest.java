@@ -7,6 +7,7 @@ import org.junit.Test;
 import types.User;
 
 import static io.restassured.RestAssured.given;
+import static org.apache.http.HttpStatus.SC_FORBIDDEN;
 import static org.hamcrest.Matchers.equalTo;
 
 public class CreateUserTest extends AbstractBaseApi {
@@ -47,7 +48,7 @@ public class CreateUserTest extends AbstractBaseApi {
                 .then()
                 .log().all()
                 .assertThat()
-                .statusCode(403)  // Код ошибки для существующего пользователя
+                .statusCode(SC_FORBIDDEN)  // Код ошибки для существующего пользователя
                 .body("success", equalTo(false))
                 .body("message", equalTo("User already exists"));
     }
@@ -69,7 +70,7 @@ public class CreateUserTest extends AbstractBaseApi {
                 .then()
                 .log().all()
                 .assertThat()
-                .statusCode(403)  // Код ошибки из-за отсутствия обязательного поля
+                .statusCode(SC_FORBIDDEN)  // Код ошибки из-за отсутствия обязательного поля
                 .body("success", equalTo(false))
                 .body("message", equalTo("Email, password and name are required fields"));
     }

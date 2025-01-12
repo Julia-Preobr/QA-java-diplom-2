@@ -7,6 +7,8 @@ import org.junit.Assert;
 import types.User;
 
 import static io.restassured.RestAssured.given;
+import static org.apache.http.HttpStatus.SC_ACCEPTED;
+import static org.apache.http.HttpStatus.SC_OK;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.notNullValue;
 
@@ -48,7 +50,7 @@ public abstract class AbstractBaseApi {
                 .then()
                 .log().all()
                 .assertThat()
-                .statusCode(200)
+                .statusCode(SC_OK)
                 .body("success", equalTo(true))  // Успех
                 .body("user.email", equalTo(user.getEmail()))  // Проверка email
                 .body("user.name", equalTo(user.getName()))  // Проверка имени
@@ -59,6 +61,7 @@ public abstract class AbstractBaseApi {
         authToken = response.extract().path("accessToken");
     }
 
+    @Step("Проверка наличия активного пользователя, удаление пользователя: {0}")
     protected void deleteDefinedUser(User user) {
         if (authToken != null) {
             deleteActiveUser(user);
@@ -80,6 +83,6 @@ public abstract class AbstractBaseApi {
                 .then()
                 .log().all()
                 .assertThat()
-                .statusCode(202);  // Успешное удаление
+                .statusCode(SC_ACCEPTED);  // Успешное удаление
     }
 }

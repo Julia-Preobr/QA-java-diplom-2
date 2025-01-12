@@ -9,6 +9,8 @@ import org.junit.Test;
 import types.Login;
 
 import static io.restassured.RestAssured.given;
+import static org.apache.http.HttpStatus.SC_OK;
+import static org.apache.http.HttpStatus.SC_UNAUTHORIZED;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.notNullValue;
 
@@ -49,7 +51,7 @@ public class LoginUserTest extends AbstractBaseApi {
                 .then()
                 .log().all()
                 .assertThat()
-                .statusCode(200)
+                .statusCode(SC_OK)
                 .body("success", equalTo(true))
                 .body("user.email", equalTo(user.getEmail()))  // Проверка email
                 .body("user.name", equalTo(user.getName()))  // Проверка имени
@@ -75,7 +77,7 @@ public class LoginUserTest extends AbstractBaseApi {
                 .then()
                 .log().all()
                 .assertThat()
-                .statusCode(401)  // Ошибка 401 при неверных данных
+                .statusCode(SC_UNAUTHORIZED)  // Ошибка 401 при неверных данных
                 .body("success", equalTo(false))
                 .body("message", equalTo("email or password are incorrect"));
     }

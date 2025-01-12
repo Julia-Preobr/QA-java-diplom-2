@@ -12,6 +12,7 @@ import java.util.Collections;
 import java.util.List;
 
 import static io.restassured.RestAssured.given;
+import static org.apache.http.HttpStatus.*;
 import static org.hamcrest.Matchers.equalTo;
 
 public class OrderTest extends AbstractBaseApi {
@@ -45,7 +46,7 @@ public class OrderTest extends AbstractBaseApi {
                 .then()
                 .log().all()
                 .assertThat()
-                .statusCode(200)  // Ожидаемый статус код для успешного создания заказа
+                .statusCode(SC_OK)  // Ожидаемый статус код для успешного создания заказа
                 .body("success", equalTo(true))  // Проверка успешного ответа
                 .body("order.ingredients.size()", equalTo(2))  // Проверка размера ингредиентов
                 .extract()
@@ -62,7 +63,7 @@ public class OrderTest extends AbstractBaseApi {
                 .then()
                 .log().all()
                 .assertThat()
-                .statusCode(200)
+                .statusCode(SC_OK)
                 .body("success", equalTo(true))
                 .body("orders[0]._id", equalTo(orderId));  // Проверяем, что полученный заказ имеет тот же ID
     }
@@ -85,7 +86,7 @@ public class OrderTest extends AbstractBaseApi {
                 .then()
                 .log().all()
                 .assertThat()
-                .statusCode(401)  // Ожидаемый статус код для неавторизованного пользователя
+                .statusCode(SC_UNAUTHORIZED)  // Ожидаемый статус код для неавторизованного пользователя
                 .body("success", equalTo(false))  // Проверка, что ответ не успешен
                 .body("message", equalTo("You should be authorised"));  // Проверка сообщения об ошибке
     }
@@ -109,7 +110,7 @@ public class OrderTest extends AbstractBaseApi {
                 .then()
                 .assertThat()
                 .log().all()
-                .statusCode(500);  // Ожидаемый статус код для неправильных данных
+                .statusCode(SC_INTERNAL_SERVER_ERROR);  // Ожидаемый статус код для неправильных данных
 
     }
 
@@ -132,7 +133,7 @@ public class OrderTest extends AbstractBaseApi {
                 .then()
                 .log().all()
                 .assertThat()
-                .statusCode(200)  // Ожидаемый код ответа при успешном создании заказа
+                .statusCode(SC_OK)  // Ожидаемый код ответа при успешном создании заказа
                 .body("success", equalTo(true))  // Проверка, что заказ успешно создан
                 .body("order.ingredients.size()", equalTo(2));  // Проверка, что количество ингредиентов в заказе равно
     }
@@ -156,7 +157,7 @@ public class OrderTest extends AbstractBaseApi {
                 .then()
                 .log().all()
                 .assertThat()
-                .statusCode(400)  // Ожидаемый код ошибки при отсутствии ингредиентов
+                .statusCode(SC_BAD_REQUEST)  // Ожидаемый код ошибки при отсутствии ингредиентов
                 .body("success", equalTo(false)) // Проверка, что заказ не был создан
                 .body("message", equalTo("Ingredient ids must be provided")); // Проверка сообщения об ошибке
     }
@@ -173,7 +174,7 @@ public class OrderTest extends AbstractBaseApi {
                 .then()
                 .log().all()
                 .assertThat()
-                .statusCode(200)
+                .statusCode(SC_OK)
                 .body("success", equalTo(true))
                 .body("orders.size()", equalTo(0));  // Проверяем, что список существует, но пустой
     }
@@ -189,7 +190,7 @@ public class OrderTest extends AbstractBaseApi {
                 .then()
                 .log().all()
                 .assertThat()
-                .statusCode(401)
+                .statusCode(SC_UNAUTHORIZED)
                 .body("success", equalTo(false))
                 .body("message", equalTo("You should be authorised"));
     }
