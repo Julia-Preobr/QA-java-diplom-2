@@ -15,7 +15,7 @@ import static io.restassured.RestAssured.given;
 import static org.apache.http.HttpStatus.*;
 import static org.hamcrest.Matchers.equalTo;
 
-public class OrderTest extends AbstractBaseApi {
+public class CreateOrderTest extends AbstractBaseApi {
 
     @Before
     public void setUp() {
@@ -160,39 +160,6 @@ public class OrderTest extends AbstractBaseApi {
                 .statusCode(SC_BAD_REQUEST)  // Ожидаемый код ошибки при отсутствии ингредиентов
                 .body("success", equalTo(false)) // Проверка, что заказ не был создан
                 .body("message", equalTo("Ingredient ids must be provided")); // Проверка сообщения об ошибке
-    }
-
-    @Test
-    @DisplayName("Получение заказов с авторизацией")
-    @Description("Получение заказов с авторизацией")
-    public void getOrdersWithAuth() {
-        given()
-                .filter(new AllureRestAssured())
-                .header("Authorization", authToken)
-                .when()
-                .get(resource)  // Получаем заказ по ID
-                .then()
-                .log().all()
-                .assertThat()
-                .statusCode(SC_OK)
-                .body("success", equalTo(true))
-                .body("orders.size()", equalTo(0));  // Проверяем, что список существует, но пустой
-    }
-
-    @Test
-    @DisplayName("Получение заказов без авторизации")
-    @Description("Получение заказов без авторизации")
-    public void getOrdersWithoutAuth() {
-        given()
-                .filter(new AllureRestAssured())
-                .when()
-                .get(resource)  // Получаем заказ по ID
-                .then()
-                .log().all()
-                .assertThat()
-                .statusCode(SC_UNAUTHORIZED)
-                .body("success", equalTo(false))
-                .body("message", equalTo("You should be authorised"));
     }
 
     @After
