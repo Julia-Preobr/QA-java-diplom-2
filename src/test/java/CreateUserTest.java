@@ -1,22 +1,15 @@
+import api.UserApi;
 import io.qameta.allure.Description;
 import io.qameta.allure.Step;
 import io.qameta.allure.junit4.DisplayName;
-import io.qameta.allure.restassured.AllureRestAssured;
 import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 import types.User;
 
-import static io.restassured.RestAssured.given;
 import static org.apache.http.HttpStatus.SC_FORBIDDEN;
 import static org.hamcrest.Matchers.equalTo;
 
 public class CreateUserTest extends AbstractBaseApi {
-
-    @Before
-    public void setUp() {
-        setResource("/auth/register");
-    }
 
     @Test
     @DisplayName("Создание уникального пользователя")
@@ -34,15 +27,7 @@ public class CreateUserTest extends AbstractBaseApi {
         // Попытка регистрации с существующим email
         User existingUser = user;
 
-        given()
-                .filter(new AllureRestAssured())
-                .header("Content-type", "application/json")
-                .body(existingUser)
-                .log().all()
-                .when()
-                .post(resource)
-                .then()
-                .log().all()
+        UserApi.createUser(existingUser)
                 .assertThat()
                 .statusCode(SC_FORBIDDEN)  // Код ошибки для существующего пользователя
                 .body("success", equalTo(false))
@@ -71,15 +56,7 @@ public class CreateUserTest extends AbstractBaseApi {
 
     @Step("Создание пользователя без обязательного поля (user: {0})")
     public void stepCreateUserWithoutRequiredField(User localUser) {
-        given()
-                .filter(new AllureRestAssured())
-                .header("Content-type", "application/json")
-                .body(localUser)
-                .log().all()
-                .when()
-                .post(resource)
-                .then()
-                .log().all()
+        UserApi.createUser(localUser)
                 .assertThat()
                 .statusCode(SC_FORBIDDEN)  // Код ошибки из-за отсутствия обязательного поля
                 .body("success", equalTo(false))

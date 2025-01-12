@@ -1,6 +1,6 @@
+import api.OrderApi;
 import io.qameta.allure.Description;
 import io.qameta.allure.junit4.DisplayName;
-import io.qameta.allure.restassured.AllureRestAssured;
 import io.restassured.response.Response;
 import org.junit.After;
 import org.junit.Assert;
@@ -11,7 +11,6 @@ import types.Order;
 import java.util.Collections;
 import java.util.List;
 
-import static io.restassured.RestAssured.given;
 import static org.apache.http.HttpStatus.*;
 import static org.hamcrest.Matchers.equalTo;
 
@@ -19,7 +18,7 @@ public class CreateOrderTest extends AbstractBaseApi {
 
     @Before
     public void setUp() {
-        setResource("/orders");
+        initialize();
 
         createDefinedUser(getRandomUser());
 
@@ -35,33 +34,19 @@ public class CreateOrderTest extends AbstractBaseApi {
         newOrder.setIngredients(List.of("61c0c5a71d1f82001bdaaa6d", "61c0c5a71d1f82001bdaaa72"));
 
         // Выполнение POST-запроса для создания заказа с авторизацией
-        Response response = given()
-                .filter(new AllureRestAssured())
-                .header("Content-type", "application/json")
-                .header("Authorization", authToken)  // Заголовок с токеном авторизации
-                .body(newOrder)  // Тело запроса с ингредиентами
-                .log().all()
-                .when()
-                .post(resource)  // URL для создания заказа
-                .then()
-                .log().all()
-                .assertThat()
-                .statusCode(SC_OK)  // Ожидаемый статус код для успешного создания заказа
-                .body("success", equalTo(true))  // Проверка успешного ответа
-                .body("order.ingredients.size()", equalTo(2))  // Проверка размера ингредиентов
-                .extract()
-                .response();
+        Response response =
+                OrderApi.createOrder(newOrder, authToken)
+                        .assertThat()
+                        .statusCode(SC_OK)  // Ожидаемый статус код для успешного создания заказа
+                        .body("success", equalTo(true))  // Проверка успешного ответа
+                        .body("order.ingredients.size()", equalTo(2))  // Проверка размера ингредиентов
+                        .extract()
+                        .response();
 
         // Используем переменную response для извлечения ID заказа и других данных из ответа
         String orderId = response.jsonPath().getString("order._id");  // Извлекаем ID нового заказа
 
-        given()
-                .filter(new AllureRestAssured())
-                .header("Authorization", authToken)
-                .when()
-                .get(resource)  // Получаем заказ по ID
-                .then()
-                .log().all()
+        OrderApi.getOrders(authToken)
                 .assertThat()
                 .statusCode(SC_OK)
                 .body("success", equalTo(true))
@@ -76,15 +61,7 @@ public class CreateOrderTest extends AbstractBaseApi {
         newOrder.setIngredients(List.of("61c0c5a71d1f82001bdaaa6d", "61c0c5a71d1f82001bdaaa72"));
 
         // Выполнение POST-запроса для создания заказа без авторизации
-        given()
-                .filter(new AllureRestAssured())
-                .header("Content-type", "application/json")
-                .body(newOrder)  // Тело запроса с ингредиентами
-                .log().all()
-                .when()
-                .post(resource)  // URL для создания заказа
-                .then()
-                .log().all()
+        OrderApi.createOrder(newOrder, null)
                 .assertThat()
                 .statusCode(SC_UNAUTHORIZED)  // Ожидаемый статус код для неавторизованного пользователя
                 .body("success", equalTo(false))  // Проверка, что ответ не успешен
@@ -99,19 +76,9 @@ public class CreateOrderTest extends AbstractBaseApi {
         newOrder.setIngredients(List.of("invalid_hash_1", "invalid_hash_2"));
 
         // Выполнение POST-запроса для создания заказа с неверными ингредиентами
-        given()
-                .filter(new AllureRestAssured())
-                .header("Content-type", "application/json")
-                .header("Authorization", authToken)  // Заголовок с токеном авторизации
-                .body(newOrder)  // Тело запроса с неверными ингредиентами
-                .log().all()
-                .when()
-                .post(resource)  // URL для создания заказа
-                .then()
+        OrderApi.createOrder(newOrder, authToken)
                 .assertThat()
-                .log().all()
                 .statusCode(SC_INTERNAL_SERVER_ERROR);  // Ожидаемый статус код для неправильных данных
-
     }
 
     @Test
@@ -122,16 +89,7 @@ public class CreateOrderTest extends AbstractBaseApi {
         newOrder.setIngredients(List.of("61c0c5a71d1f82001bdaaa6d", "61c0c5a71d1f82001bdaaa72"));
 
         // Отправка POST-запроса для создания заказа
-        given()
-                .filter(new AllureRestAssured())
-                .header("Content-type", "application/json")
-                .header("Authorization", authToken)  // Заголовок с авторизацией
-                .body(newOrder)  // Тело запроса с ингредиентами
-                .log().all()
-                .when()
-                .post(resource)  // Путь для создания заказа
-                .then()
-                .log().all()
+        OrderApi.createOrder(newOrder, authToken)
                 .assertThat()
                 .statusCode(SC_OK)  // Ожидаемый код ответа при успешном создании заказа
                 .body("success", equalTo(true))  // Проверка, что заказ успешно создан
@@ -146,16 +104,7 @@ public class CreateOrderTest extends AbstractBaseApi {
         newOrder.setIngredients(Collections.emptyList());
 
         // Отправка POST-запроса для создания заказа
-        given()
-                .filter(new AllureRestAssured())
-                .header("Content-type", "application/json")
-                .header("Authorization", authToken)  // Заголовок с авторизацией
-                .body(newOrder)  // Тело запроса без ингредиентов
-                .log().all()
-                .when()
-                .post(resource)  // Путь для создания заказа
-                .then()
-                .log().all()
+        OrderApi.createOrder(newOrder, authToken)
                 .assertThat()
                 .statusCode(SC_BAD_REQUEST)  // Ожидаемый код ошибки при отсутствии ингредиентов
                 .body("success", equalTo(false)) // Проверка, что заказ не был создан
