@@ -13,8 +13,6 @@ import static org.hamcrest.Matchers.equalTo;
 
 public class CreateUserTest extends AbstractBaseApi {
 
-    private String existingEmail = "Преображенскася_11@yandex.ru"; // Существующий email для тестов
-
     @Before
     public void setUp() {
         setResource("/auth/register");
@@ -31,10 +29,10 @@ public class CreateUserTest extends AbstractBaseApi {
     @Test
     @DisplayName("Попытка создать пользователя с уже зарегистрированным логином")
     public void testCreateUserWithExistingUsername() {
-        testCreateUniqueUser();
+        createDefinedUser(user = getRandomUser());
 
         // Попытка регистрации с существующим email
-        User existingUser = new User(existingEmail, user.getPassword(), user.getName());
+        User existingUser = user;
 
         given()
                 .filter(new AllureRestAssured())
@@ -49,6 +47,8 @@ public class CreateUserTest extends AbstractBaseApi {
                 .statusCode(SC_FORBIDDEN)  // Код ошибки для существующего пользователя
                 .body("success", equalTo(false))
                 .body("message", equalTo("User already exists"));
+
+        deleteDefinedUser(user);
     }
 
     @Test
