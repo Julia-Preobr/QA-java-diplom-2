@@ -28,6 +28,23 @@ public class Ingredient {
     @JsonProperty("__v")
     private Integer v;
 
+    public Ingredient(String id, String name, String type, Integer proteins,
+                      Integer fat, Integer carbohydrates, Integer calories, Integer price,
+                      String image, String imageMobile, String imageLarge, Integer v) {
+        this.id = id;
+        this.name = name;
+        this.type = type;
+        this.proteins = proteins;
+        this.fat = fat;
+        this.carbohydrates = carbohydrates;
+        this.calories = calories;
+        this.price = price;
+        this.image = image;
+        this.imageMobile = imageMobile;
+        this.imageLarge = imageLarge;
+        this.v = v;
+    }
+
     public String getId() {
         return id;
     }
@@ -121,23 +138,6 @@ public class Ingredient {
     }
 
     public void setV(Integer v) {
-        this.v = v;
-    }
-
-    public Ingredient(String id, String name, String type, Integer proteins,
-                      Integer fat, Integer carbohydrates, Integer calories, Integer price,
-                      String image, String imageMobile, String imageLarge, Integer v) {
-        this.id = id;
-        this.name = name;
-        this.type = type;
-        this.proteins = proteins;
-        this.fat = fat;
-        this.carbohydrates = carbohydrates;
-        this.calories = calories;
-        this.price = price;
-        this.image = image;
-        this.imageMobile = imageMobile;
-        this.imageLarge = imageLarge;
         this.v = v;
     }
 
