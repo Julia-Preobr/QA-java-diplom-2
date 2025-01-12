@@ -1,4 +1,4 @@
-import io.qameta.allure.Step;
+import io.qameta.allure.Description;
 import io.qameta.allure.junit4.DisplayName;
 import io.qameta.allure.restassured.AllureRestAssured;
 import io.restassured.response.Response;
@@ -29,7 +29,7 @@ public class OrderTest extends AbstractBaseApi {
 
     @Test
     @DisplayName("Создание заказа с авторизацией")
-    @Step("Создание заказа с авторизацией")
+    @Description("Создание заказа с авторизацией")
     public void createOrderWithAuth() {
         Order newOrder = new Order();
         newOrder.setIngredients(List.of("61c0c5a71d1f82001bdaaa6d", "61c0c5a71d1f82001bdaaa72"));
@@ -70,7 +70,7 @@ public class OrderTest extends AbstractBaseApi {
 
     @Test
     @DisplayName("Создание заказа без авторизации")
-    @Step("Создание заказа без авторизации")
+    @Description("Создание заказа без авторизации")
     public void createOrderWithoutAuth() {
         Order newOrder = new Order();
         newOrder.setIngredients(List.of("61c0c5a71d1f82001bdaaa6d", "61c0c5a71d1f82001bdaaa72"));
@@ -93,7 +93,7 @@ public class OrderTest extends AbstractBaseApi {
 
     @Test
     @DisplayName("Создание заказа с неверным хешем ингредиентов")
-    @Step("Создание заказа с неверным хешем ингредиентов")
+    @Description("Создание заказа с неверным хешем ингредиентов")
     public void createOrderWithInvalidIngredientsHash() {
         Order newOrder = new Order();
         newOrder.setIngredients(List.of("invalid_hash_1", "invalid_hash_2"));
@@ -116,7 +116,7 @@ public class OrderTest extends AbstractBaseApi {
 
     @Test
     @DisplayName("Создание заказа с ингредиентами")
-    @Step("Создание заказа с ингредиентами")
+    @Description("Создание заказа с ингредиентами")
     public void createOrderWithIngredients() {
         Order newOrder = new Order();
         newOrder.setIngredients(List.of("61c0c5a71d1f82001bdaaa6d", "61c0c5a71d1f82001bdaaa72"));
@@ -140,7 +140,7 @@ public class OrderTest extends AbstractBaseApi {
 
     @Test
     @DisplayName("Создание заказа без ингредиентов")
-    @Step("Создание заказа без ингредиентов")
+    @Description("Создание заказа без ингредиентов")
     public void createOrderWithoutIngredients() {
         Order newOrder = new Order();
         newOrder.setIngredients(Collections.emptyList());
@@ -164,7 +164,7 @@ public class OrderTest extends AbstractBaseApi {
 
     @Test
     @DisplayName("Получение заказов с авторизацией")
-    @Step("Получение заказов с авторизацией")
+    @Description("Получение заказов с авторизацией")
     public void getOrdersWithAuth() {
         given()
                 .filter(new AllureRestAssured())
@@ -181,7 +181,7 @@ public class OrderTest extends AbstractBaseApi {
 
     @Test
     @DisplayName("Получение заказов без авторизации")
-    @Step("Получение заказов без авторизации")
+    @Description("Получение заказов без авторизации")
     public void getOrdersWithoutAuth() {
         given()
                 .filter(new AllureRestAssured())
