@@ -1,4 +1,3 @@
-import io.qameta.allure.Step;
 import io.qameta.allure.junit4.DisplayName;
 import io.qameta.allure.restassured.AllureRestAssured;
 import io.restassured.response.ValidatableResponse;
@@ -27,14 +26,8 @@ public class LoginUserTest extends AbstractBaseApi {
     }
 
     @Test
-    @DisplayName("Проверка входа пользователя")
+    @DisplayName("Логин пользователя с существующим пользователем")
     public void testLoginUser() {
-        testLoginWithValidCredentials();
-        testLoginWithInvalidCredentials();
-    }
-
-    @Step("Логин пользователя с существующим пользователем")
-    public void testLoginWithValidCredentials() {
         // Сначала регистрируем нового пользователя
         createDefinedUser(getRandomUser());
 
@@ -62,10 +55,32 @@ public class LoginUserTest extends AbstractBaseApi {
         authToken = response.extract().path("accessToken");
     }
 
-    @Step("Логин с неверным логином или паролем")
-    public void testLoginWithInvalidCredentials() {
+    @Test
+    @DisplayName("Логин с неверным логином")
+    public void testLoginWithInvalidUsername() {
         // Попытка логина с неверными данными
-        Login login = new Login("wrong@example.com", "wrongpassword");
+        Login login = new Login("wrong@example.com", user.getPassword());
+
+        given()
+                .filter(new AllureRestAssured())
+                .header("Content-type", "application/json")
+                .body(login)
+                .log().all()
+                .when()
+                .post(resource)
+                .then()
+                .log().all()
+                .assertThat()
+                .statusCode(SC_UNAUTHORIZED)  // Ошибка 401 при неверных данных
+                .body("success", equalTo(false))
+                .body("message", equalTo("email or password are incorrect"));
+    }
+
+    @Test
+    @DisplayName("Логин с неверным паролем")
+    public void testLoginWithInvalidPassword() {
+        // Попытка логина с неверными данными
+        Login login = new Login(user.getEmail(), "wrongpassword");
 
         given()
                 .filter(new AllureRestAssured())

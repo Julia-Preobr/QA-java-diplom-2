@@ -1,3 +1,4 @@
+import io.qameta.allure.Description;
 import io.qameta.allure.Step;
 import io.qameta.allure.junit4.DisplayName;
 import io.qameta.allure.restassured.AllureRestAssured;
@@ -21,6 +22,7 @@ public class CreateUserTest extends AbstractBaseApi {
 
     @Test
     @DisplayName("Создание уникального пользователя")
+    @Description("Создание уникального пользователя")
     public void testCreateUniqueUser() {
         createDefinedUser(user = getRandomUser());
         deleteDefinedUser(user);
