@@ -62,7 +62,7 @@ public abstract class AbstractBaseApi {
 
         authToken = null;
 
-        UserApi.logoutUser(authValue)
+        UserApi.removeUser(authValue)
                 .assertThat()
                 .statusCode(SC_ACCEPTED);  // Успешное удаление
     }

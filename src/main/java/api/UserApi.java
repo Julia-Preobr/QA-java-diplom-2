@@ -36,7 +36,7 @@ public class UserApi {
                 .log().all();
     }
 
-    public static ValidatableResponse logoutUser(String authToken) {
+    public static ValidatableResponse removeUser(String authToken) {
         if (!authToken.startsWith(BEARER_HEADER)) {
             authToken = BEARER_HEADER + authToken;
         }
