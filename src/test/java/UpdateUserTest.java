@@ -1,4 +1,5 @@
 import api.UserApi;
+import io.qameta.allure.Description;
 import io.qameta.allure.Step;
 import io.qameta.allure.junit4.DisplayName;
 import io.restassured.response.ValidatableResponse;
@@ -26,6 +27,7 @@ public class UpdateUserTest extends AbstractBaseApi {
 
     @Test
     @DisplayName("Проверка обновления данных пользователя")
+    @Description("Проверка обновления данных пользователя")
     public void testUpdateUser() {
         testUpdateUserWithAuthorization();
         testUpdateUserWithoutAuthorization();

@@ -1,4 +1,5 @@
 import api.UserApi;
+import io.qameta.allure.Description;
 import io.qameta.allure.junit4.DisplayName;
 import io.restassured.response.ValidatableResponse;
 import org.junit.After;
@@ -26,6 +27,7 @@ public class LoginUserTest extends AbstractBaseApi {
 
     @Test
     @DisplayName("Логин пользователя с существующим пользователем")
+    @Description("Логин пользователя с существующим пользователем")
     public void testLoginUser() {
         // Сначала регистрируем нового пользователя
         createDefinedUser(getRandomUser());
@@ -49,6 +51,7 @@ public class LoginUserTest extends AbstractBaseApi {
 
     @Test
     @DisplayName("Логин с неверным логином")
+    @Description("Логин с неверным логином")
     public void testLoginWithInvalidUsername() {
         // Попытка логина с неверными данными
         Login login = new Login("wrong@example.com", user.getPassword());
@@ -62,6 +65,7 @@ public class LoginUserTest extends AbstractBaseApi {
 
     @Test
     @DisplayName("Логин с неверным паролем")
+    @Description("Логин с неверным паролем")
     public void testLoginWithInvalidPassword() {
         // Попытка логина с неверными данными
         Login login = new Login(user.getEmail(), "wrongpassword");

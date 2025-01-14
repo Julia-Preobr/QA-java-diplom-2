@@ -21,6 +21,7 @@ public class CreateUserTest extends AbstractBaseApi {
 
     @Test
     @DisplayName("Попытка создать пользователя с уже зарегистрированным логином")
+    @Description("Попытка создать пользователя с уже зарегистрированным логином")
     public void testCreateUserWithExistingUsername() {
         createDefinedUser(user = getRandomUser());
 
@@ -38,18 +39,21 @@ public class CreateUserTest extends AbstractBaseApi {
 
     @Test
     @DisplayName("Попытка создать пользователя без email")
+    @Description("Попытка создать пользователя без email")
     public void testCreateUserWithoutEmail() {
         stepCreateUserWithoutRequiredField(new User(null, "12365", "NewUser"));
     }
 
     @Test
     @DisplayName("Попытка создать пользователя без name")
+    @Description("Попытка создать пользователя без name")
     public void testCreateUserWithoutName() {
         stepCreateUserWithoutRequiredField(new User("ahjgsdfjhgasf@yandex.ru", "12365", null));
     }
 
     @Test
     @DisplayName("Попытка создать пользователя без password")
+    @Description("Попытка создать пользователя без password")
     public void testCreateUserWithoutPassword() {
         stepCreateUserWithoutRequiredField(new User("ahjgsdfjhgasf@yandex.ru", null, "NewUser"));
     }
