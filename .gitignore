@@ -1,0 +1,13 @@
+!target/
+target/*
+!target/allure-results/
+
+!**/src/main/**/target/
+!**/src/test/**/target/
+
+.allure/
+
+.idea/
+*.iws
+*.iml
+*.ipr
