@@ -1,13 +1,20 @@
 package types;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class User extends Login {
     @JsonProperty("name")
     private String name;
 
     public User(String email, String password, String name) {
         super(email, password);
+        this.name = name;
+    }
+
+    public User(String email, String name) {
+        super(email, null);
         this.name = name;
     }
 

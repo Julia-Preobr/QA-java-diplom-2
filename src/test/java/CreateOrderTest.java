@@ -29,7 +29,7 @@ public class CreateOrderTest extends AbstractBaseApi {
     @Test
     @DisplayName("Создание заказа с авторизацией")
     @Description("Создание заказа с авторизацией")
-    public void createOrderWithAuth() {
+    public void testCreateOrderWithAuth() {
         Order newOrder = new Order();
         newOrder.setIngredients(List.of("61c0c5a71d1f82001bdaaa6d", "61c0c5a71d1f82001bdaaa72"));
 
@@ -56,7 +56,7 @@ public class CreateOrderTest extends AbstractBaseApi {
     @Test
     @DisplayName("Создание заказа без авторизации")
     @Description("Создание заказа без авторизации")
-    public void createOrderWithoutAuth() {
+    public void testCreateOrderWithoutAuth() {
         Order newOrder = new Order();
         newOrder.setIngredients(List.of("61c0c5a71d1f82001bdaaa6d", "61c0c5a71d1f82001bdaaa72"));
 
@@ -71,7 +71,7 @@ public class CreateOrderTest extends AbstractBaseApi {
     @Test
     @DisplayName("Создание заказа с неверным хешем ингредиентов")
     @Description("Создание заказа с неверным хешем ингредиентов")
-    public void createOrderWithInvalidIngredientsHash() {
+    public void testCreateOrderWithInvalidIngredientsHash() {
         Order newOrder = new Order();
         newOrder.setIngredients(List.of("invalid_hash_1", "invalid_hash_2"));
 
@@ -84,7 +84,7 @@ public class CreateOrderTest extends AbstractBaseApi {
     @Test
     @DisplayName("Создание заказа с ингредиентами")
     @Description("Создание заказа с ингредиентами")
-    public void createOrderWithIngredients() {
+    public void testCreateOrderWithIngredients() {
         Order newOrder = new Order();
         newOrder.setIngredients(List.of("61c0c5a71d1f82001bdaaa6d", "61c0c5a71d1f82001bdaaa72"));
 
@@ -99,7 +99,7 @@ public class CreateOrderTest extends AbstractBaseApi {
     @Test
     @DisplayName("Создание заказа без ингредиентов")
     @Description("Создание заказа без ингредиентов")
-    public void createOrderWithoutIngredients() {
+    public void testCreateOrderWithoutIngredients() {
         Order newOrder = new Order();
         newOrder.setIngredients(Collections.emptyList());
 

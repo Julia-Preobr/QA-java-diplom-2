@@ -14,7 +14,7 @@ public class OrderApi {
         return getBaseRequestSpecification(order, authToken)  // Тело запроса с ингредиентами
                 .log().all()
                 .when()
-                .post("/orders")  // URL для создания заказа
+                .post(Endpoints.ORDERS_LIST)  // URL для создания заказа
                 .then()
                 .log().all();
     }
@@ -23,7 +23,7 @@ public class OrderApi {
         return getBaseRequestSpecification(null, authToken)  // Тело запроса с ингредиентами
                 .log().all()
                 .when()
-                .get("/orders")  // URL для получения заказов
+                .get(Endpoints.ORDERS_LIST)  // URL для получения заказов
                 .then()
                 .log().all();
     }
@@ -43,4 +43,5 @@ public class OrderApi {
         }
         return requestSpecification;
     }
+
 }

@@ -26,9 +26,13 @@ public abstract class AbstractBaseApi {
         // Генерация слйчайных данных для пользователя
         String username = RandomStringUtils.randomAlphanumeric(8, 15);  // уникальное имя
         String password = RandomStringUtils.randomAlphanumeric(8, 15);  // стандартный пароль
-        String email = RandomStringUtils.randomAlphanumeric(8, 15).toLowerCase() + "@yandex.ru";  // email пользователя
+        String email = getRandomEmail();  // email пользователя
 
         return new User(email, password, username);
+    }
+
+    protected String getRandomEmail() {
+        return RandomStringUtils.randomAlphanumeric(8, 15).toLowerCase() + "@yandex.ru";
     }
 
     @Step("Регистрация пользователя: {0}")

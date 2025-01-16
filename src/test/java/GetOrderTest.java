@@ -5,6 +5,9 @@ import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import types.Order;
+
+import java.util.List;
 
 import static org.apache.http.HttpStatus.SC_OK;
 import static org.apache.http.HttpStatus.SC_UNAUTHORIZED;
@@ -24,23 +27,36 @@ public class GetOrderTest extends AbstractBaseApi {
     @Test
     @DisplayName("Получение заказов с авторизацией")
     @Description("Получение заказов с авторизацией")
-    public void getOrdersWithAuth() {
+    public void testGetOrdersWithAuth() {
+        createTestOrder();
+
         OrderApi.getOrders(authToken)
                 .assertThat()
                 .statusCode(SC_OK)
                 .body("success", equalTo(true))
-                .body("orders.size()", equalTo(0));  // Проверяем, что список существует, но пустой
+                .body("orders.size()", equalTo(1));  // Проверяем, что список существует, но пустой
     }
 
     @Test
     @DisplayName("Получение заказов без авторизации")
     @Description("Получение заказов без авторизации")
-    public void getOrdersWithoutAuth() {
+    public void testGetOrdersWithoutAuth() {
         OrderApi.getOrders(null)
                 .assertThat()
                 .statusCode(SC_UNAUTHORIZED)
                 .body("success", equalTo(false))
                 .body("message", equalTo("You should be authorised"));
+    }
+
+    private void createTestOrder() {
+        Order newOrder = new Order();
+        newOrder.setIngredients(List.of("61c0c5a71d1f82001bdaaa6d", "61c0c5a71d1f82001bdaaa72"));
+
+        OrderApi.createOrder(newOrder, authToken)
+                .assertThat()
+                .statusCode(SC_OK)  // Ожидаемый статус код для успешного создания заказа
+                .body("success", equalTo(true))  // Проверка успешного ответа
+                .body("order.ingredients.size()", equalTo(2));  // Проверка размера ингредиентов
     }
 
     @After

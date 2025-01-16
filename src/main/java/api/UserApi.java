@@ -19,7 +19,7 @@ public class UserApi {
                 .body(user)
                 .log().all()
                 .when()
-                .post("/auth/register")
+                .post(Endpoints.USER_AUTH_REGISTER)
                 .then()
                 .log().all();
     }
@@ -31,7 +31,7 @@ public class UserApi {
                 .body(login)
                 .log().all()
                 .when()
-                .post("/auth/login")
+                .post(Endpoints.USER_AUTH_LOGIN)
                 .then()
                 .log().all();
     }
@@ -45,7 +45,7 @@ public class UserApi {
                 .header("Authorization", authToken)  // Авторизация с использованием токена
                 .log().all()
                 .when()
-                .delete("/auth/user")
+                .delete(Endpoints.USER_AUTH_USER)
                 .then()
                 .log().all();
     }
@@ -67,7 +67,7 @@ public class UserApi {
         return requestSpecification
                 .log().all()
                 .when()
-                .patch("/auth/user")
+                .patch(Endpoints.USER_AUTH_USER)
                 .then()
                 .log().all();
     }
